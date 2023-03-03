@@ -21,37 +21,34 @@ options.user_data_dir = profile
 driver = uc.Chrome(options=options, use_subprocess=True)
 driver.get('https://www.google.com/maps/d/u/0/edit?mid=19Af8BUv6WDvFGncBjN45gxDzWUKGeKI&usp=sharing')
 
-
-barraPesquisa = driver.find_element("id", "mapsprosearch-field")
-botaoPesquisar = driver.find_element("id", "mapsprosearch-button")
 wait = WebDriverWait(driver,10)
+#barraPesquisa = driver.find_element("id", "mapsprosearch-field")
+#botaoPesquisar = driver.find_element("id", "mapsprosearch-button")
+
+barraPesquisa = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="mapsprosearch-field"]')))
+botaoPesquisar = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="mapsprosearch-button"]/div')))
+
 
 for index, row in df.iterrows():
     sigla = row[Sigla]
     conteudo = ' '.join(row[dados])
     locationArray = [str (item) for item in row[localizacao] ]
     loc = ' '.join(locationArray)
-    barraPesquisa.send_keys(loc + "\n")
-    time.sleep(0.3)
-    #greenPoint = driver.find_element("class", "un1lmc-pbTTYe-ibnC6b JIbV8-pbTTYe-ibnC6b-G0jgYd JIbV8-pbTTYe-ibnC6b-gk6SMd")
+    barraPesquisa.send_keys(loc)
+    botaoPesquisar.click()
+
     greenPoint = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="searchresultsview"]/div/div/div[2]/div/div/div[3]')))
+    driver.execute_script("arguments[0].click()",greenPoint)
+    edit = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-edit-button"]')))
+    driver.execute_script("arguments[0].click()",edit)
+    espacoSigla = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-nome-value"]')))
+    espacoSigla.send_keys(sigla)
+    #espacoDesc = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-descrição-value"]')))
+    #espacoDesc.send_keys(conteudo + " " + loc)
+    salvar = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-done-editing-button"]/div')))
+    driver.execute_script("arguments[0].click()",salvar)
+
+
+
     
-    greenPoint.click()
-    time.sleep(0.5)
-    #addToMap = driver.find_element("id", "addtomap-button")
-    addToMap = wait.until(EC.presence_of_element_located((By.ID,"addtomap-button")))
-    addToMap.click()
-
-    #edit = driver.find_element("id", "map-infowindow-edit-button")
-    #espacoSigla = driver.find_element("id", "map-infowindow-attr-nome-value")
-    #espacoDesc = driver.find_element("id", "map-infowindow-attr-descrição-value")
-
-
-
-    
-    
-
-
-
-
 time.sleep(1000)
