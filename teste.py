@@ -43,8 +43,8 @@ for index, row in df.iterrows():
     driver.execute_script("arguments[0].click()",edit)
     espacoSigla = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-nome-value"]')))
     espacoSigla.send_keys(sigla)
-    #espacoDesc = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-descrição-value"]')))
-    #espacoDesc.send_keys(conteudo + " " + loc)
+    espacoDesc = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-descrição-value"]')))
+    espacoDesc.send_keys(conteudo + " " + loc)
     salvar = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-done-editing-button"]/div')))
     driver.execute_script("arguments[0].click()",salvar)
 
