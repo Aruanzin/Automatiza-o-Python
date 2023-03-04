@@ -1,23 +1,31 @@
-import time
+import tkinter as tk
 
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+root= tk.Tk()
 
-navegador = webdriver.Firefox()
-navegador.get('https://www.google.com/maps/d/u/0/edit?hl=pt-BR&mid=11Ur-K6OTHZEoa9i3-PO7P3mgQgMT3Lk&ll=-13.453169271686487%2C-51.925279499999995&z=4')
+canvas1 = tk.Canvas(root, width=400, height=300, relief='raised')
+canvas1.pack()
 
-loginButton = navegador.find_element("id", "gb_70")
+label1 = tk.Label(root, text='Calculate the Square Root')
+label1.config(font=('helvetica', 14))
+canvas1.create_window(200, 25, window=label1)
 
-loginButton.click()
+label2 = tk.Label(root, text='Type your Number:')
+label2.config(font=('helvetica', 10))
+canvas1.create_window(200, 100, window=label2)
 
+entry1 = tk.Entry(root) 
+canvas1.create_window(200, 140, window=entry1)
 
-google_popup =  navegador.window_handles[1]
-navegador.switch_to.window(google_popup)
+def get_square_root():
+    x1 = entry1.get()
+    
+    label3 = tk.Label(root, text='The Square Root of ' + x1 + ' is:', font=('helvetica', 10))
+    canvas1.create_window(200, 210, window=label3)
+    
+    label4 = tk.Label(root, text=float(x1)**0.5, font=('helvetica', 10, 'bold'))
+    canvas1.create_window(200, 230, window=label4)
+    
+button1 = tk.Button(text='Get the Square Root', command=get_square_root, bg='brown', fg='white', font=('helvetica', 9, 'bold'))
+canvas1.create_window(200, 180, window=button1)
 
-Login = navegador.find_element("id", "identifierId")
-Login.send_keys("AruanBretas15@gmail.com")
-Login.send_keys(Keys.RETURN)
-
-
-
-time.sleep(1000)
+root.mainloop()
