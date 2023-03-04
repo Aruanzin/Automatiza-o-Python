@@ -2,25 +2,34 @@ import tkinter as tk
 from tkinter import filedialog
 from Principal import principal
 
+def fileFinder():
+    filePath = filedialog.askopenfilename(
+        filetypes=(("Text files", "*.txt"), ("All files", "*.*"))
+    )
+    return filePath
+
+
 
 window = tk.Tk()
 window.title("MapMarker - MM")
-window.attributes('-zoomed', True)
 window.configure(bg="#FFFFFF")
 
 label = tk.Label(window, text="Por favor, selecione o arquivo que você quer ler")
 label.pack()
 
-button = tk.Button(window, text="Arquivo", bg='white')
-button.pack()
 
-def button_click():
-    file_path = filedialog.askopenfilename(
-        filetypes=(("Text files", "*.txt"), ("All files", "*.*"))
-    )
-    principal(fileName=file_path, maps='https://www.google.com/maps/d/u/0/edit?mid=19Af8BUv6WDvFGncBjN45gxDzWUKGeKI&usp=sharing')
+entry = tk.Entry(window, width=90)
+entry.pack()
+map = str(entry.get())
 
+file = tk.Button(window, text="Arquivo", bg='white')
+file.pack()
+file.config(command=fileFinder)
 
-button.config(command=button_click)
+run = tk.Button(window, text="Rodas", bg='white')
+run.pack()
+run.config(command=lambda: principal(fileName='/home/johnatas/Documentos/workspace/python/MapMaker/data.xlsx', map=map))
+print(map)
 
 window.mainloop()
+

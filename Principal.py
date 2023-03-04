@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
-def principal(fileName, maps):
+def principal(fileName, map):
     # Read the Excel file into a pandas dataframe
     df = pd.read_excel(fileName)
 
@@ -20,7 +20,7 @@ def principal(fileName, maps):
     profile = "C:\\Users\\Usuario\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"
     options.user_data_dir = profile
     driver = uc.Chrome(options=options, use_subprocess=True)
-    driver.get(maps)
+    driver.get(map)
 
     # wait = WebDriverWait(driver,10)
 
