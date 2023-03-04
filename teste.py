@@ -44,9 +44,14 @@ for index, row in df.iterrows():
     edit = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-edit-button"]')))
     driver.execute_script("arguments[0].click()",edit)
 
-    action_chains.key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL).perform()
     
+
     espacoSigla = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-nome-value"]')))
+    try:
+        espacoSigla.clear()
+    except Exception as e:
+        print(e)
+
     espacoSigla.send_keys(sigla)
     espacoDesc = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-descrição-value"]')))
     espacoDesc.send_keys(conteudo + " " + loc)
