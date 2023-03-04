@@ -2,6 +2,7 @@ import time
 import pandas as pd
 import undetected_chromedriver as uc
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
@@ -21,7 +22,11 @@ def principal(fileName, map):
     options.user_data_dir = profile
     driver = uc.Chrome(options=options, use_subprocess=True)
     driver.get(map)
-
+    try:
+        driver.find_element(By.XPATH, '//*[@id="gb_70"]')
+        print('não logado')
+    except NoSuchElementException:
+        print('logado')
     # wait = WebDriverWait(driver,10)
 
     # barraPesquisa = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="mapsprosearch-field"]')))
@@ -55,7 +60,6 @@ def principal(fileName, map):
     #     espacoDesc.send_keys(conteudo + " " + loc)
     #     salvar = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-done-editing-button"]/div')))
     #     driver.execute_script("arguments[0].click()",salvar)
-
-
-
+        
+    
     time.sleep(1000)

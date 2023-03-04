@@ -3,9 +3,7 @@ from tkinter import filedialog
 from Principal import principal
 
 def fileFinder():
-    filePath = filedialog.askopenfilename(
-        filetypes=(("Text files", "*.txt"), ("All files", "*.*"))
-    )
+    filePath = filedialog.askopenfilename()
     return filePath
 
 
