@@ -20,7 +20,6 @@ label.pack()
 
 entry = tk.Entry(window, width=90)
 entry.pack()
-#map = str(entry.get())
 
 file = tk.Button(window, text="Arquivo", bg='white')
 file.pack()
