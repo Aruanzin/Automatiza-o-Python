@@ -20,7 +20,7 @@ label.pack()
 
 entry = tk.Entry(window, width=90)
 entry.pack()
-map = str(entry.get())
+#map = str(entry.get())
 
 file = tk.Button(window, text="Arquivo", bg='white')
 file.pack()
@@ -28,7 +28,7 @@ file.config(command=fileFinder)
 
 run = tk.Button(window, text="Rodas", bg='white')
 run.pack()
-run.config(command=lambda: principal(fileName='/home/johnatas/Documentos/workspace/python/MapMaker/data.xlsx', map=map))
+run.config(command=lambda: principal(fileName=fileFinder(), map=str(entry.get())))
 print(map)
 
 window.mainloop()
