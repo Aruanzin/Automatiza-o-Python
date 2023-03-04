@@ -7,8 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
-a = 301
-b = 302
+
 # Read the Excel file into a pandas dataframe
 df = pd.read_excel('data.xlsx')
 
@@ -24,8 +23,6 @@ driver = uc.Chrome(options=options, use_subprocess=True)
 driver.get('https://www.google.com/maps/d/u/0/edit?mid=19Af8BUv6WDvFGncBjN45gxDzWUKGeKI&usp=sharing')
 
 wait = WebDriverWait(driver,10)
-#barraPesquisa = driver.find_element("id", "mapsprosearch-field")
-#botaoPesquisar = driver.find_element("id", "mapsprosearch-button")
 
 barraPesquisa = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="mapsprosearch-field"]')))
 botaoPesquisar = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="mapsprosearch-button"]/div')))
@@ -48,7 +45,7 @@ for index, row in df.iterrows():
     driver.execute_script("arguments[0].click()",edit)
 
     action_chains.key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL).perform()
-
+    
     espacoSigla = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-nome-value"]')))
     espacoSigla.send_keys(sigla)
     espacoDesc = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-descrição-value"]')))
