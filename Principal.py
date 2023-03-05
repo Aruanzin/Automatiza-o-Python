@@ -7,15 +7,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-def principal(fileName, map):
-    # Read the Excel file into a pandas dataframe
-    print(map)
-    df = pd.read_excel(fileName)
-
-    # Group the data by the first four columns
-    Sigla = 'Endereço-ID'
-    dados = ['Cidade', 'Logradouro', 'FORNECEDOR', 'TIPO']
-    localizacao = ['Latitude', 'Longitude']
+def principal(listaSigla, listaDesc, listaLoc):
     # Iterate over each group and concatenate the row values
     options = uc.ChromeOptions()
     profile = "C:\\Users\\Usuario\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"
@@ -35,14 +27,7 @@ def principal(fileName, map):
         botaoPesquisar = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="mapsprosearch-button"]/div')))
 
 
-        for index, row in df.iterrows():
-            sigla = row[Sigla]
-            locationArray = [str (item) for item in row[localizacao] ]
-            conteudoArray = [str (item) for item in row[dados] ]
-            loc = ' '.join(locationArray)
-            conteudo = ' '.join(conteudoArray)
-
-
+        for sigla, conteudo, loc in zip(listaSigla, listaDesc, listaLoc):
             barraPesquisa.send_keys(loc)
             botaoPesquisar.click()
 

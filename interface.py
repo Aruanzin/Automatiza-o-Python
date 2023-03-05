@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import END, filedialog
-from Principal import principal
+from manipulaçãoExcel import leArquivo
 
 def fileFinder():
     filePath = filedialog.askopenfilename()
@@ -18,10 +18,11 @@ def on_focus_out(event):
 
 def get_map_link(fileName, map):
     if map.startswith("https://www.google.com/maps/"):
+        # leArquivo(fileName=fileName, map=map)
         try:
-            principal(fileName=fileName, map=map)
+            leArquivo(fileName=fileName, map=map)
         except Exception as e:
-            print(e)
+            label.config(text=e)
     else:
         label.config(text="Link incorreto: o link do mapa deve começar com https://www.google.com/maps/")
 
@@ -43,6 +44,7 @@ run = tk.Button(window, text="Rodar", bg='brown', fg='white', font=('helvetica',
 run.pack()
 
 try:
+    #run.config(command=lambda: leArquivo(fileName=fileFinder()))
     run.config(command=lambda: get_map_link(fileName=fileFinder(), map=str(entry.get())))
 except ValueError as e:
     label.config(text=str(e))
