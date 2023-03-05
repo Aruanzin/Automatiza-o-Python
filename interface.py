@@ -1,5 +1,8 @@
 import tkinter as tk
 from tkinter import END, filedialog
+from selenium.common.exceptions import InvalidArgumentException
+from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import InvalidSessionIdException
 from Principal import principal
 
 def fileFinder():
@@ -26,21 +29,26 @@ label = tk.Label(window, text="Por favor, selecione o arquivo que você quer ler
 label.pack()
 
 
-entry = tk.Entry(window, width=90  )
-entry.pack()
+entry = tk.Entry(window, width=90, relief='flat')
+entry.pack(padx=20, pady=50)
+
 entry.insert(0, 'Link do mapa')
 entry.bind('<FocusIn>', on_focus_in)
 entry.bind('<FocusOut>', on_focus_out)
 
-# frame
-buttonContainer = tk.Frame(window, relief = 'sunken',
-              bd = 1, bg = 'white')
-buttonContainer.pack(fill = 'both', expand = True,
-           padx = 10, pady = 10)
+# fra
+run = tk.Button(window, text="Rodar", bg='brown', fg='white', font=('helvetica', 12, 'bold'),width=10, relief="flat")
+run.pack() 
+# run.config(command=lambda: principal(fileName=fileFinder(), map=str(entry.get())))
 
-run = tk.Button(buttonContainer, text="Rodar", bg='brown', fg='white', font=('helvetica', 12, 'bold'),pady=20 )
-run.pack()
-run.config(command=lambda: principal(fileName=fileFinder(), map=str(entry.get())))
+try:
+    run.config(command=lambda: principal(fileName=fileFinder(), map=str(entry.get())))
+except TimeoutException:
+    label.config(text="Site não encontrado")
+except InvalidArgumentException:
+    label.config(text="O link está incorreto")  
+except InvalidSessionIdException:
+    label.config(text="O link está incorreto")  
 print(map)
 
 window.mainloop()
