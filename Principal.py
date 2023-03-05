@@ -47,8 +47,8 @@ def principal(listaSigla, listaDesc, listaLoc):
                     driver.execute_script("arguments[0].click()",salvar)
                 except Exception as e:
                     print(sigla, e)
-        except TimeoutException:
-            driver.close()
+            except TimeoutException:
+                driver.close()
         
     
     time.sleep(1000)
