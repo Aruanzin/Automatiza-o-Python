@@ -58,7 +58,7 @@ def principal(fileName, map):
                     salvar = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-done-editing-button"]/div')))
                     driver.execute_script("arguments[0].click()",salvar)
                 except Exception as e:
-                    print(sigla, e)
+                    print( e)
         except TimeoutException:
             driver.close()
         
