@@ -1,8 +1,5 @@
 import tkinter as tk
 from tkinter import END, filedialog
-from selenium.common.exceptions import InvalidArgumentException
-from selenium.common.exceptions import TimeoutException
-from selenium.common.exceptions import InvalidSessionIdException
 from Principal import principal
 
 def fileFinder():
@@ -16,18 +13,24 @@ def on_focus_in(event):
 
 def on_focus_out(event):
     if entry.get() == '':
-        entry.insert(0, 'Enter your text here')
+        entry.insert(0, 'Link do mapa')
         entry.config(fg='gray')
 
+def get_map_link(fileName, map):
+    if map.startswith("https://www.google.com/maps/"):
+        try:
+            principal(fileName=fileName, map=map)
+        except Exception as e:
+            print(e)
+    else:
+        label.config(text="Link incorreto: o link do mapa deve começar com https://www.google.com/maps/")
 
 window = tk.Tk()
 window.title("MapMarker - MM")
 window.configure(bg="#FFFFFF")
 
-
 label = tk.Label(window, text="Por favor, selecione o arquivo que você quer ler", font=('helvetica', 10, 'bold'), bg='white', pady=20)
 label.pack()
-
 
 entry = tk.Entry(window, width=90, relief='flat')
 entry.pack(padx=20, pady=50)
@@ -36,20 +39,12 @@ entry.insert(0, 'Link do mapa')
 entry.bind('<FocusIn>', on_focus_in)
 entry.bind('<FocusOut>', on_focus_out)
 
-# fra
 run = tk.Button(window, text="Rodar", bg='brown', fg='white', font=('helvetica', 12, 'bold'),width=10, relief="flat")
-run.pack() 
-# run.config(command=lambda: principal(fileName=fileFinder(), map=str(entry.get())))
+run.pack()
 
 try:
-    run.config(command=lambda: principal(fileName=fileFinder(), map=str(entry.get())))
-except TimeoutException:
-    label.config(text="Site não encontrado")
-except InvalidArgumentException:
-    label.config(text="O link está incorreto")  
-except InvalidSessionIdException:
-    label.config(text="O link está incorreto")  
-print(map)
+    run.config(command=lambda: get_map_link(fileName=fileFinder(), map=str(entry.get())))
+except ValueError as e:
+    label.config(text=str(e))
 
 window.mainloop()
-
