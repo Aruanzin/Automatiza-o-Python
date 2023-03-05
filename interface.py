@@ -6,14 +6,21 @@ def fileFinder():
     filePath = filedialog.askopenfilename()
     return filePath
 
+def animate_dot(label):
+    label['text'] += '.'
+    if len(label['text']) > 3:
+        label['text'] = 'Loading'
+    label.after(500, animate_dot, label)
 
 def get_map_link(fileName, map):
     if map.startswith("https://www.google.com/maps/"):
-        # try:
-        # print(fileName)
-        principal(fileName=fileName, map=map)
-        # except Exception as e:
-        #     print(e)
+        try:
+            print(fileName)
+            principal(fileName=fileName, map=map)
+            label.config(text='Loading')
+            animate_dot(label=label)
+        except Exception as e:
+            print(e)
     else:
         label.config(text="Link incorreto: o link do mapa deve começar com https://www.google.com/maps/")
 
@@ -55,6 +62,8 @@ linkEntry.pack()
 
 run = tk.Button(window, text="Rodar", bg='brown', fg='white', font=('helvetica', 12, 'bold'),width=42, relief="flat")
 run.pack(pady=30, padx=25)
+
+
 
 try:
     run.config(command=lambda: get_map_link(fileName=fileFinder(), map=str(linkEntry.get())))
