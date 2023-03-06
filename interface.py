@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import END, filedialog
-from Principal import principal
+from manipulaçãoExcel import leArquivo
 
 def fileFinder():
     filePath = filedialog.askopenfilename()
@@ -14,13 +14,14 @@ def animate_dot(label):
 
 def get_map_link(fileName, map):
     if map.startswith("https://www.google.com/maps/"):
+        # leArquivo(fileName=fileName, map=map)
         try:
             print(fileName)
-            principal(fileName=fileName, map=map)
+            leArquivo(fileName=fileName, map=map)
             label.config(text='Loading')
             animate_dot(label=label)
         except Exception as e:
-            print(e)
+            label.config(text=e)
     else:
         label.config(text="Link incorreto: o link do mapa deve começar com https://www.google.com/maps/")
 
