@@ -29,6 +29,7 @@ window = tk.Tk()
 window.title("MapMarker - MM")
 window.configure(bg="#FFFFFF")
 
+
 label = tk.Label(window, text="Por favor, selecione o arquivo que você quer ler", font=('helvetica', 10, 'bold'), bg='white', pady=20)
 label.pack()
 
