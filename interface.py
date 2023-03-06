@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import END, filedialog
 from manipulaçãoExcel import leArquivo
 from ttkthemes import ThemedTk
-
+import json
 
 def fileFinder():
     filePath = filedialog.askopenfilename()
@@ -26,80 +26,143 @@ def get_map_link(fileName, map):
             label.config(text=e)
     else:
         label.config(text="Link incorreto: o link do mapa deve começar com https://www.google.com/maps/")
-def add_value(frame,values,entry):
+
+def create_widget(frame, type, value):
+    newFrame = tk.Frame(frame )
+    newFrame.pack(fill='both')
+    newEntry = tk.Entry(newFrame)
+    newEntry.insert(tk.END, value)
+    newEntry.pack(side =tk.LEFT ,fill='both', expand=True)
+    button = tk.Button(newFrame, text="Remove Value", command=lambda: remove_widget(newFrame,type=type, value=value))
+    button.pack(side=tk.LEFT)
+
+def remove_widget(widget,type, value):
+    info[type].remove(value)
+    widget.destroy()
+
+def add_value(frame,type,entry):
     value = entry.get()
     if value:
-        newFrame = tk.Frame(frame)
-        newFrame.pack()
-        
-        newEntry = tk.Entry(newFrame,width=50)
-        newEntry.insert(tk.END, value)
-        newEntry.pack(side=tk.LEFT)
-        button = tk.Button(newFrame, text="Remove Value")
-        button.pack(side=tk.RIGHT)
-        values.append(value)
+        create_widget(frame,type,value)
+        info[type].append(value)
         entry.delete(0, tk.END)
-        print("Values:", values)
+        print("Values:", info)
 
-window = ThemedTk(theme="arc")
-window.title("MapMarker - MM")
-window.configure(bg="#FFFFFF")
+def recover_data(frame, type, value):
+    create_widget(frame,type,value)
+    print("Values:", info)
 
-row = 0
+
+def write_data(data):
+    with open('_data.json', 'w') as f:
+    # Write the dictionary as a JSON object to the file
+        json.dump(data, f)
+    f.close()
+
+def read_data():
+    with open('_data.json', 'r') as f:
+    # Load the data from the file
+        data = json.load(f)
+    if not data:
+        data = {
+            'localizacoes': [],
+            'titulos': [],
+            'descricao': []
+        }
+        write_data(data)
+    f.close()
+    return data
+
+def on_closing():
+    if tk.messagebox.askokcancel("Quit", "Do you want to quit?"):
+        write_data(info)
+        window.destroy()
+root = ThemedTk(theme='arc')
+root.title("MapMarker - MM")
+root.configure(bg="#FFFFFF")
+
+
+window = tk.Frame()
+window.pack(fill='both', expand=True, side=tk.LEFT)
+
+canvas = tk.Canvas(window)
+canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
+
+
+scrollbar = tk.Scrollbar(root, command=canvas.yview)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+canvas.configure(yscrollcommand=scrollbar.set)
+
+
+info = read_data()
+
 
 label = tk.Label(window, text="Por favor, selecione o arquivo que você quer ler", font=('helvetica', 10, 'bold'), bg='white', pady=20)
 label.pack()
-row +=1
 
-localizacaoLabel = tk.Label(window,bg='white',width=90, text="Localização:")
+localizacaoLabel = tk.Label(window,bg='white', text="Localização:")
 localizacaoLabel.pack(pady=20)
-row +=1
 
-# Create an entry widget for the name input
-localizacaoEntry = tk.Entry(window,width=50)
-localizacaoEntry.pack()
-row +=1
+localizacoesFrame = tk.Frame(window)
+localizacoesFrame.pack()
 
 
-tituloLabel = tk.Label(window,bg='white',width=90, text="Titulo da localização:")
+localizacoesAdd = tk.Frame(localizacoesFrame)
+localizacoesAdd.pack(expand=True,fill='both')
+localizacoesEntry = tk.Entry(localizacoesAdd, width=50)
+localizacoesEntry.pack(side=tk.LEFT,fill='both',expand=True)
+localizacoesButton = tk.Button(localizacoesAdd, text="Add Value", command=lambda: add_value(localizacoesFrame,'localizacoes', localizacoesEntry))
+localizacoesButton.pack(side=tk.LEFT)
+
+for loc in info['localizacoes']:
+    recover_data(localizacoesFrame,'localizacoes', loc)
+
+tituloLabel = tk.Label(window,bg='white',width=90 ,text="Titulo da localização:")
 tituloLabel.pack(pady=20)
-row +=1
-
-# Create an entry widget for the name input
-titulos=[]
 tituloFrame = tk.Frame(window)
 tituloFrame.pack()
 
 tituloAdd = tk.Frame(tituloFrame)
 tituloAdd.pack()
 tituloEntry = tk.Entry(tituloAdd,width=50)
-tituloEntry.pack(side=tk.LEFT)
-button = tk.Button(tituloAdd, text="Add Value", command=lambda: add_value(tituloFrame,titulos, tituloEntry))
-button.pack(side=tk.RIGHT)
-row+=1
+tituloEntry.pack(side=tk.LEFT, expand=True, fill='both')
+tituloButton = tk.Button(tituloAdd, text="Add Value", command=lambda: add_value(tituloFrame,'titulos', tituloEntry))
+tituloButton.pack(side=tk.RIGHT)
+print(info['titulos'])
 
+for loc in info['titulos']:
+    print(loc)
+    recover_data(tituloFrame,'titulos', loc)
 
-descricaoLabel = tk.Label(window,bg='white',width=90, text="Descricao da localização:")
+descricaoLabel = tk.Label(window,bg='white', text="Descrição:")
 descricaoLabel.pack(pady=20)
-row+=1
 
+descricaoFrame = tk.Frame(window)
+descricaoFrame.pack()
+descricaoAdd = tk.Frame(descricaoFrame)
+descricaoAdd.pack()
+
+descricaoEntry = tk.Entry(descricaoAdd,width=50)
+descricaoEntry.pack(side=tk.LEFT, fill='both', expand=True)
+descricaoButton = tk.Button(descricaoAdd, text="Add Value", command=lambda: add_value(descricaoFrame,'descricao', descricaoEntry))
+descricaoButton.pack(side=tk.RIGHT)
+for loc in info['descricao']:
+    recover_data(descricaoFrame,'descricao', loc)
 # Create an entry widget for the name input
-linkEntry = tk.Entry(window,width=50)
-linkEntry.pack()
-row+=1
-
-linkLabel = tk.Label(window,bg='white',width=90, text="Link da mapa:")
+linkLabel = tk.Label(window,bg='white', text="Link da mapa:")
 linkLabel.pack(pady=20)
-row+=1
+linkFrame = tk.Frame(window)
+linkFrame.pack()
 
+linkAdd = tk.Frame(linkFrame)
+linkAdd.pack()
 # Create an entry widget for the name input
-linkEntry = tk.Entry(window,width=50 )
-linkEntry.pack()
-row+=1
+linkEntry = tk.Entry(linkAdd,width=50 )
+linkEntry.pack(expand=True, fill='both')
 
 run = tk.Button(window, text="Rodar", bg='brown', fg='white', font=('helvetica', 12, 'bold'),width=42, relief="flat")
 run.pack(pady=30, padx=25)
-row+=1
 
 
 
@@ -108,4 +171,5 @@ try:
 except ValueError as e:
     label.config(text=str(e))
 
-window.mainloop()
+root.protocol("WM_DELETE_WINDOW", on_closing)
+root.mainloop()
