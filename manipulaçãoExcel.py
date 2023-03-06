@@ -25,7 +25,7 @@ def leArquivo(fileName, map):
 
     for index, row in df.iterrows():
         if row[dados].isnull().values.any() or pd.isna(row[Sigla]):
-            raise ValueError(f"Valor vazio na linha {index}")
+            raise ValueError(f"Valor vazio na linha {index+2}")
         else:
             sigla = row[Sigla]
             locationArray = [str (item) for item in row[localizacao] ]
