@@ -1,6 +1,8 @@
 import pandas as pd
 import math
+import numpy as np
 from Principal import principal
+
 
 
 def leArquivo(fileName, map):
@@ -22,7 +24,7 @@ def leArquivo(fileName, map):
     listaLoc = []
 
     for index, row in df.iterrows():
-        if row[dados].isnull().values.any() or row[Sigla] is pd.NaT:
+        if row[dados].isnull().values.any() or pd.isna(row[Sigla]):
             raise ValueError(f"Valor vazio na linha {index}")
         else:
             sigla = row[Sigla]
@@ -37,5 +39,5 @@ def leArquivo(fileName, map):
             listaConteudo.append(conteudo)
             listaLoc.append(loc)
 
-    principal(listaSigla=listaSigla, listaDesc=listaConteudo, listaLoc=listaLoc)    
+    principal(listaSigla, listaConteudo, listaLoc, map)    
     # print("SIGLAS: ", listaSigla,"CONTEUDOS: ", listaConteudo, "LOCALIZACOES: ",listaLoc)        
