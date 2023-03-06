@@ -7,13 +7,16 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-def principal(listaSigla, listaDesc, listaLoc):
+def principal(listaSigla, listaDesc, listaLoc, map):
     # Iterate over each group and concatenate the row values
+    
+    print(map)
     options = uc.ChromeOptions()
     profile = "C:\\Users\\Usuario\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"
     options.user_data_dir = profile
     driver = uc.Chrome(options=options, use_subprocess=True)
     driver.get(map)
+    
     try:
         driver.find_element(By.XPATH, '//*[@id="gb_70"]')
         driver.execute_script('alert("Por favor, logue no MyMaps")')
@@ -40,13 +43,13 @@ def principal(listaSigla, listaDesc, listaLoc):
                 espacoSigla = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-nome-value"]')))
                 try:
                     espacoSigla.clear()
-                    espacoSigla.send_keys(sigla)
-                    espacoDesc = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-descrição-value"]')))
-                    espacoDesc.send_keys(conteudo + " " + loc)
-                    salvar = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-done-editing-button"]/div')))
-                    driver.execute_script("arguments[0].click()",salvar)
                 except Exception as e:
                     print(sigla, e)
+                espacoSigla.send_keys(sigla)
+                espacoDesc = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-descrição-value"]')))
+                espacoDesc.send_keys(conteudo + " " + loc)
+                salvar = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-done-editing-button"]/div')))
+                driver.execute_script("arguments[0].click()",salvar)
             except TimeoutException:
                 driver.close()
         
