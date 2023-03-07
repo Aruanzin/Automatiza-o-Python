@@ -74,9 +74,9 @@ def read_data():
     return data
 
 def on_closing():
-    if tk.messagebox.askokcancel("Quit", "Do you want to quit?"):
-        write_data(info)
-        root.destroy()
+    # if tk.messagebox.askokcancel("Quit", "Do you want to quit?"):
+        # write_data(info)
+    root.destroy()
 
 
 
@@ -100,7 +100,6 @@ window = tk.Frame(canvas, bg='green')
 canvas.create_window((0,0), window=window,anchor='nw')
 
 info = read_data()
-
 
 label = tk.Label(window, text="Por favor, selecione o arquivo que você quer ler", font=('helvetica', 10, 'bold'), bg='white', pady=20)
 label.pack()
