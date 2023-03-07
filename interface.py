@@ -76,24 +76,28 @@ def read_data():
 def on_closing():
     if tk.messagebox.askokcancel("Quit", "Do you want to quit?"):
         write_data(info)
-        window.destroy()
-root = ThemedTk(theme='arc')
-root.title("MapMarker - MM")
-root.configure(bg="#FFFFFF")
+        root.destroy()
 
 
-window = tk.Frame()
-window.pack(fill='both', expand=True, side=tk.LEFT)
-
-canvas = tk.Canvas(window)
-canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
 
 
-scrollbar = tk.Scrollbar(root, command=canvas.yview)
-scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+root = tk.Tk()
+root.title('MapMaker - MM', )
+
+frame =tk.Frame(root,bg='red')
+frame.pack(fill='both', expand=True)
+
+canvas = tk.Canvas(frame, bg='black')
+canvas.pack(side=tk.LEFT, fill='both', expand=True)
+
+scrollbar = tk.Scrollbar(frame, orient='vertical', command=canvas.yview)
+scrollbar.pack(side=tk.RIGHT, fill='y')
 
 canvas.configure(yscrollcommand=scrollbar.set)
+canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox('all')))
 
+window = tk.Frame(canvas, bg='green')
+canvas.create_window((0,0), window=window,anchor='nw')
 
 info = read_data()
 
