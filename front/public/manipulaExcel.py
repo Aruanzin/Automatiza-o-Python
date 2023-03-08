@@ -34,13 +34,7 @@ def read_data():
 
 
 print('princial')
-info = {
-        'localizacoes': [],
-        'titulos': [],
-        'descricao': [],
-        'filePath': '/home/johnatas/Documentos/workspace/python/MapMaker/data.xlsx',
-        'map': 'https://www.google.com/maps/d/u/0/edit?mid=19Af8BUv6WDvFGncBjN45gxDzWUKGeKI&ll=-26.81010219809132%2C-50.838401644747634&z=5'
-    }
+info = read_data
 
 df = pd.read_excel(info['filePath'])
 
