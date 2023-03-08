@@ -45,28 +45,24 @@ ipcMain.on('entry-map', (event, data) => {
 });
 
 ipcMain.on('run', () => {
-  console.log(mapLink, pathFile)
-  // try{
-  var python = spawn("python", [
-    "./manipulaExcel.py",
+  var python = spawn("python3", [
+    path.join(__dirname,"/manipulaExcel.py"),
     pathFile,
     'https://www.google.com/maps/d/u/0/edit?mid=19Af8BUv6WDvFGncBjN45gxDzWUKGeKI'
   ]);
-  // }catch(e){
-  //   console.log(e)
-  // }
-  // python.stdout.on("data", function (data) {
-  //   // Do some process here
-  // });
 
-  // python.stderr.on("data", (data) => {
-  //   console.error(`stderr: ${data}`);
-  //   console.log(`stderr: ${data}`);
-  // });
+  python.stdout.on("data", function (data) {
+    // Do some process here
+  });
 
-  // python.on("close", (code) => {
-  //   console.log(`child process exited with code ${code}`);
-  // });
+  python.stderr.on("data", (data) => {
+    console.error(`stderr: ${data}`);
+    console.log(`stderr: ${data}`);
+  });
+
+  python.on("close", (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
 })
 
 // This method will be called when Electron has finished

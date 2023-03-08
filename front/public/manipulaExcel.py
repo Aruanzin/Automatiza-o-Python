@@ -32,49 +32,51 @@ def read_data():
     f.close()
     return data
 
-def leArquivo():
-    info = {
-            'localizacoes': [],
-            'titulos': [],
-            'descricao': [],
-            'filePath': '/home/johnatas/Documentos/workspace/python/MapMaker/data.xlsx',
-            'map': 'https://www.google.com/maps/d/u/0/edit?mid=19Af8BUv6WDvFGncBjN45gxDzWUKGeKI&ll=-26.81010219809132%2C-50.838401644747634&z=5'
-        }
 
-    df = pd.read_excel(info['filePath'])
+print('princial')
+info = {
+        'localizacoes': [],
+        'titulos': [],
+        'descricao': [],
+        'filePath': '/home/johnatas/Documentos/workspace/python/MapMaker/data.xlsx',
+        'map': 'https://www.google.com/maps/d/u/0/edit?mid=19Af8BUv6WDvFGncBjN45gxDzWUKGeKI&ll=-26.81010219809132%2C-50.838401644747634&z=5'
+    }
 
-    #firstLine = df.columns
-    #tSigla = firstLine[0]
+df = pd.read_excel(info['filePath'])
 
-
-    
-    Sigla = 'Endereço-ID'
-    dados = ['Cidade', 'Logradouro', 'FORNECEDOR', 'TIPO']
-    localizacao = ['Latitude', 'Longitude']
+#firstLine = df.columns
+#tSigla = firstLine[0]
 
 
-    listaSigla = []
-    listaConteudo = []
-    listaLoc = []
 
-    for index, row in df.iterrows():
-        if row[dados].isnull().values.any() or pd.isna(row[Sigla]) or validar_coordenadas(df.loc[index, 'Latitude'], df.loc[index, 'Longitude']):
-            raise ValueError(f"Valor vazio na linha {index+2}")
-        else:
-            sigla = row[Sigla]
-            locationArray = [str (item) for item in row[localizacao] ]
-            # conteudoArray = row[dados]
-            loc = ' '.join(locationArray)
-            conteudo = ' '.join(row[dados])
+Sigla = 'Endereço-ID'
+dados = ['Cidade', 'Logradouro', 'FORNECEDOR', 'TIPO']
+localizacao = ['Latitude', 'Longitude']
 
-            # conteudoSemNull = list(filter(lambda x: not math.isnan(x), conteudo))
 
-            listaSigla.append(sigla)
-            listaConteudo.append(conteudo)
-            listaLoc.append(loc)
+listaSigla = []
+listaConteudo = []
+listaLoc = []
 
-    principal(listaSigla, listaConteudo, listaLoc, info['map'])    
+for index, row in df.iterrows():
+    if row[dados].isnull().values.any() or pd.isna(row[Sigla]) or validar_coordenadas(df.loc[index, 'Latitude'], df.loc[index, 'Longitude']):
+        raise ValueError(f"Valor vazio na linha {index+2}")
+    else:
+        sigla = row[Sigla]
+        locationArray = [str (item) for item in row[localizacao] ]
+        # conteudoArray = row[dados]
+        loc = ' '.join(locationArray)
+        conteudo = ' '.join(row[dados])
+
+        # conteudoSemNull = list(filter(lambda x: not math.isnan(x), conteudo))
+
+        listaSigla.append(sigla)
+        listaConteudo.append(conteudo)
+        listaLoc.append(loc)
+
+principal(listaSigla, listaConteudo, listaLoc, info['map'])    
     # print("SIGLAS: ", listaSigla,"CONTEUDOS: ", listaConteudo, "LOCALIZACOES: ",listaLoc)        
 
-if __name__ == '__main__':
-    leArquivo()
+# if __name__ == '__main__':
+#     print('principal')
+#     leArquivo()
