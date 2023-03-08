@@ -1,0 +1,40 @@
+.data-conteiner{
+    display: flex;
+    flex: column;
+    width: 75vw;
+}
+
+.entry{
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.entry input {
+    width: 60vw;
+    
+}
+.entry button, .data button{
+    width: 58px;
+    height: 58px;
+}
+.input-group>.form-control, .input-group>.form-floating, .input-group>.form-select{
+    width: 60vw;
+}
+.data{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+.data input{
+    height: 58px;
+    width: 60vw;
+}
+.data-item{
+    display: flex;
+    width: 100%;
+
+}
