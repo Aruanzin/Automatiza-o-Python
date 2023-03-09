@@ -16,7 +16,7 @@ def write_data(data):
     f.close()
 
 def read_data():
-    with open('_data.json', 'r') as f:
+    with open('_data.json', 'r', encoding='utf-8') as f:
     # Load the data from the file
         data = json.load(f)
     if not data:
