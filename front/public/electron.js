@@ -1,6 +1,6 @@
 const electron = require("electron");
 const path = require("path");
-const { ipcMain, ipcRenderer } = require('electron');
+const { ipcMain, dialog } = require('electron');
 const { spawn } = require('child_process');
 const fs = require('fs');
 
@@ -47,22 +47,37 @@ ipcMain.on('entry-map', (event, data) => {
 });
 
 ipcMain.on('run', () => {
+  if(!loc || !title || !desc || !pathFile || !mapLink){
+
+    mainWindow.webContents.send('finished-py', 'Message received!')
+    dialog.showErrorBox('Ops...', 'Você não pode deixar campos vazios')
+
+    return
+  }
+  if(!mapLink.startsWith('https://www.google.com/maps/')){
+    mainWindow.webContents.send('finished-py', 'Message received!')
+    dialog.showErrorBox('Ops...', 'Você não pode deixar campos vazios')
+
+    return
+  }
   writeData()
   var python = spawn("python3", [
     path.join(__dirname, "/manipulaExcel.py"),
   ]);
 
-  python.stdout.on("data", function (data) {
-    // Do some process here
-  });
-
-  python.stderr.on("data", (data) => {
+  python.on('error', err => {
+    console.log(err)
+    dialog.showErrorBox('Algo de errado aconteceu', err)
+  })
+  python.stderr.on('data', (data) => {
+    message = data.toString()
     console.error(`stderr: ${data}`);
-    console.log(`stderr: ${data}`);
+    if(!message.includes('RequestsDependencyWarning'))
+      dialog.showErrorBox('Erro', message);
   });
 
-  python.on("close", (code) => {
-    console.log(`child process exited with code ${code}`);
+  python.on("close", (code, signal) => {
+    console.log(`child process exited with code ${code} e signal ${signal}`);
     mainWindow.webContents.send('finished-py', 'Message received!')
   });
 })
@@ -80,7 +95,6 @@ function writeData() {
     'filePath': pathFile,
     'map': mapLink
   }
-  console.log(data)
   const jsonData = JSON.stringify(data);
 
   // write the string to a file

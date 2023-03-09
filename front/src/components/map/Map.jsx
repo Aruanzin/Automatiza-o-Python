@@ -25,7 +25,7 @@ export default function Map() {
                                 className="form-control" placeholder={fileSelected ? fileSelected : 'Nenhum arquivo selecionado'}
                                 readOnly
                                 onClick={() => { document.getElementById('file').click() }} />
-                            <button type="button" className={`btn btn-${fileSelected ? 'warning' : 'primary'}`} onClick={() => { document.getElementById('file').click() }}
+                            <button type="button" className={`btn text-white btn-${fileSelected ? 'warning' : 'primary'}`} onClick={() => { document.getElementById('file').click() }}
                             >{fileSelected ? 'Mudar Arquivo' : 'Adicionar arquivo'}</button>
                         </div>
                         <input type="file" class="form-control" onChange={(e) => findFile(e)} style={{ height: '58px', }} placeholder="" id="file" />

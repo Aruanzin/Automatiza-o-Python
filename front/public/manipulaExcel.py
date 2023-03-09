@@ -33,9 +33,7 @@ def read_data():
     return data
 
 
-print('princial')
 info = read_data()
-print(info)
 df = pd.read_excel(info['filePath'])
 
 #firstLine = df.columns
@@ -54,9 +52,9 @@ listaLoc = []
 
 for index, row in df.iterrows():
     if row[dados].isnull().values.any() or row[Sigla].isnull().values.any() or row[localizacao].isnull().values.any() :
-        raise ValueError(f"Valor vazio na linha {index+2}")
+        raise Exception(f"Valor vazio na linha {index+2}")
     elif validar_coordenadas(row[localizacao][0], row[localizacao][1]):
-        raise ValueError(f"Coordenada inválida na linha {index+2}")
+        raise Exception(f"Coordenada inválida na linha {index+2}")
     else:
         sigla = " ".join(row[Sigla]) if len(row[Sigla]) > 1 else row[Sigla]
         locationArray = [str (item) for item in row[localizacao]]
