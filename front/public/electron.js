@@ -1,6 +1,6 @@
 const electron = require("electron");
 const path = require("path");
-const { ipcMain } = require('electron');
+const { ipcMain, ipcRenderer } = require('electron');
 const { spawn } = require('child_process');
 const fs = require('fs');
 
@@ -47,22 +47,23 @@ ipcMain.on('entry-map', (event, data) => {
 
 ipcMain.on('run', () => {
   writeData()
-  // var python = spawn("python3", [
-  //   path.join(__dirname, "/manipulaExcel.py"),
-  // ]);
+  var python = spawn("python3", [
+    path.join(__dirname, "/manipulaExcel.py"),
+  ]);
 
-  // python.stdout.on("data", function (data) {
-  //   // Do some process here
-  // });
+  python.stdout.on("data", function (data) {
+    // Do some process here
+  });
 
-  // python.stderr.on("data", (data) => {
-  //   console.error(`stderr: ${data}`);
-  //   console.log(`stderr: ${data}`);
-  // });
+  python.stderr.on("data", (data) => {
+    console.error(`stderr: ${data}`);
+    console.log(`stderr: ${data}`);
+  });
 
-  // python.on("close", (code) => {
-  //   console.log(`child process exited with code ${code}`);
-  // });
+  python.on("close", (code) => {
+    console.log(`child process exited with code ${code}`);
+    mainWindow.webContents.send('finished-py', 'Message received!')
+  });
 })
 
 // This method will be called when Electron has finished
@@ -71,13 +72,14 @@ ipcMain.on('run', () => {
 app.on("ready", createWindow);
 
 function writeData() {
-  data = {
+  const data = {
     'localizacoes': loc,
     'titulos': title,
     'descricao': desc,
     'filePath': pathFile,
     'map': mapLink
   }
+  console.log(data)
   const jsonData = JSON.stringify(data);
 
   // write the string to a file

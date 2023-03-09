@@ -45,9 +45,9 @@ export default function Container() {
       }, [])
     return (
         <div className="container md-8">
-            <Entry data={data['descricao']} type="desc" title="Descrição"></Entry>
-            <Entry data={data['localizacoes']} type="loc" title="Localização"></Entry>
             <Entry data={data['titulos']} type="title" title="Titulo da Localização"></Entry>
+            <Entry data={data['localizacoes']} type="loc" title="Localização"></Entry>
+            <Entry data={data['descricao']} type="desc" title="Descrição"></Entry>
             <Map />
             <Run></Run>
         </div>
