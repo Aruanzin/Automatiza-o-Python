@@ -55,7 +55,7 @@ listaLoc = []
 for index, row in df.iterrows():
     if row[dados].isnull().values.any() or row[Sigla].isnull().values.any() or row[localizacao].isnull().values.any() :
         raise ValueError(f"Valor vazio na linha {index+2}")
-    elif validar_coordenadas(df.loc[index, 'Latitude'], df.loc[index, 'Longitude']):
+    elif validar_coordenadas(row[localizacao][0], row[localizacao][1]):
         raise ValueError(f"Coordenada inválida na linha {index+2}")
     else:
         sigla = " ".join(row[Sigla]) if len(row[Sigla]) > 1 else row[Sigla]
