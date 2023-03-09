@@ -14,15 +14,15 @@ def principal(listaSigla, listaDesc, listaLoc, map):
     options = uc.ChromeOptions()
     profile = "C:\\Users\\Usuario\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"
     options.user_data_dir = profile
-    driver = uc.Chrome(options=options, use_subprocess=True)
+    driver = uc.Chrome(user_data_dir="C:\\Users\\Usuario\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1", use_subprocess=True)
     driver.get(map)
     
     try:
         driver.find_element(By.XPATH, '//*[@id="gb_70"]')
-        driver.execute_script('alert("Por favor, logue no MyMaps")')
+        # driver.execute_script('alert("Por favor, logue no MyMaps")')
     except NoSuchElementException:
         print('logado')
-    finally:
+    # finally:
         wait = WebDriverWait(driver,10)
 
         barraPesquisa = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="mapsprosearch-field"]')))
@@ -40,11 +40,9 @@ def principal(listaSigla, listaDesc, listaLoc, map):
                 edit = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-edit-button"]')))
                 driver.execute_script("arguments[0].click()",edit)
 
-                espacoSigla = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-nome-value"]')))
-                try:
-                    espacoSigla.clear()
-                except Exception as e:
-                    print(sigla, e)
+                espacoSigla = wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="map-infowindow-attr-nome-value"]')))
+                
+                espacoSigla.clear()
                 espacoSigla.send_keys(sigla)
                 espacoDesc = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-infowindow-attr-descrição-value"]')))
                 espacoDesc.send_keys(conteudo + " " + loc)

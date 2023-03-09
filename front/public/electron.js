@@ -2,6 +2,7 @@ const electron = require("electron");
 const path = require("path");
 const { ipcMain } = require('electron');
 const { spawn } = require('child_process');
+const fs = require('fs');
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -45,27 +46,40 @@ ipcMain.on('entry-map', (event, data) => {
 });
 
 ipcMain.on('run', () => {
-  var python = spawn("python3", [
-    path.join(__dirname,"/manipulaExcel.py"),
-    pathFile,
-    'https://www.google.com/maps/d/u/0/edit?mid=19Af8BUv6WDvFGncBjN45gxDzWUKGeKI'
-  ]);
+  writeData()
+  // var python = spawn("python3", [
+  //   path.join(__dirname, "/manipulaExcel.py"),
+  // ]);
 
-  python.stdout.on("data", function (data) {
-    // Do some process here
-  });
+  // python.stdout.on("data", function (data) {
+  //   // Do some process here
+  // });
 
-  python.stderr.on("data", (data) => {
-    console.error(`stderr: ${data}`);
-    console.log(`stderr: ${data}`);
-  });
+  // python.stderr.on("data", (data) => {
+  //   console.error(`stderr: ${data}`);
+  //   console.log(`stderr: ${data}`);
+  // });
 
-  python.on("close", (code) => {
-    console.log(`child process exited with code ${code}`);
-  });
+  // python.on("close", (code) => {
+  //   console.log(`child process exited with code ${code}`);
+  // });
 })
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", createWindow);
+
+function writeData() {
+  data = {
+    'localizacoes': loc,
+    'titulos': title,
+    'descricao': desc,
+    'filePath': pathFile,
+    'map': mapLink
+  }
+  const jsonData = JSON.stringify(data);
+
+  // write the string to a file
+  fs.writeFileSync('_data.json', jsonData);
+}

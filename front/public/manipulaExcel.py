@@ -34,14 +34,8 @@ def read_data():
 
 
 print('princial')
-info = {
-        'localizacoes': [],
-        'titulos': [],
-        'descricao': [],
-        'filePath': '/home/johnatas/Documentos/workspace/python/MapMaker/data.xlsx',
-        'map': 'https://www.google.com/maps/d/u/0/edit?mid=19Af8BUv6WDvFGncBjN45gxDzWUKGeKI&ll=-26.81010219809132%2C-50.838401644747634&z=5'
-    }
-
+info = read_data()
+print(info)
 df = pd.read_excel(info['filePath'])
 
 #firstLine = df.columns
@@ -49,9 +43,9 @@ df = pd.read_excel(info['filePath'])
 
 
 
-Sigla = 'Endereço-ID'
-dados = ['Cidade', 'Logradouro', 'FORNECEDOR', 'TIPO']
-localizacao = ['Latitude', 'Longitude']
+Sigla = info['titulos']
+dados = info['descricao']
+localizacao = info['localizacoes']
 
 
 listaSigla = []
@@ -59,14 +53,16 @@ listaConteudo = []
 listaLoc = []
 
 for index, row in df.iterrows():
-    if row[dados].isnull().values.any() or pd.isna(row[Sigla]) or validar_coordenadas(df.loc[index, 'Latitude'], df.loc[index, 'Longitude']):
+    if row[dados].isnull().values.any() or row[Sigla].isnull().values.any() or row[localizacao].isnull().values.any() :
         raise ValueError(f"Valor vazio na linha {index+2}")
+    elif validar_coordenadas(row[localizacao][0], row[localizacao][1]):
+        raise ValueError(f"Coordenada inválida na linha {index+2}")
     else:
-        sigla = row[Sigla]
-        locationArray = [str (item) for item in row[localizacao] ]
+        sigla = " ".join(row[Sigla]) if len(row[Sigla]) > 1 else row[Sigla]
+        locationArray = [str (item) for item in row[localizacao]]
         # conteudoArray = row[dados]
-        loc = ' '.join(locationArray)
-        conteudo = ' '.join(row[dados])
+        loc =  " ".join(locationArray) if len(locationArray) > 1 else locationArray[0]
+        conteudo =  " ".join(row[dados]) if len(row[dados]) > 1 else row[dados]
 
         # conteudoSemNull = list(filter(lambda x: not math.isnan(x), conteudo))
 
