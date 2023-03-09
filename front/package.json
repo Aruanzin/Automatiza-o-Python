@@ -48,5 +48,8 @@
     "electron": "^23.1.2",
     "electron-builder": "^23.6.0",
     "webpack-node-externals": "^3.0.0"
+  },
+  "build": {
+    "icon": "C:\\Users\\Usuario\\WorkSpace\\MapMaker\\front\\public\\favicon.ico"
   }
 }

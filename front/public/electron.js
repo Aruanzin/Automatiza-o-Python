@@ -20,6 +20,7 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: { nodeIntegration: true, contextIsolation: false },
+    icon: __dirname + './favicon.ico',
   });
   // and load the index.html of the app.
   console.log(__dirname);
