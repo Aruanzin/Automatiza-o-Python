@@ -52,6 +52,21 @@ def principal(listaSigla, listaDesc, listaLoc, map):
                 driver.execute_script("arguments[0].click()",salvar)
             except TimeoutException:
                 driver.close()
-        
     
-    time.sleep(1000)
+    #//*[@id="map-title-desc-bar"]/div[3]/div[2]/div[4]/div
+
+    while True:
+        elemento =  wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="map-title-desc-bar"]/div[3]/div[2]/div[3]/div')))
+        if elemento.is_displayed():
+            # o elemento está visível na página
+            driver.quit()
+            break
+        else:
+            print('elemento não está visivel')
+            time.sleep(3)
+            continue
+        # o elemento não está visível na página
+
+    # fechar o navegador
+    
+    # time.sleep(1000)
